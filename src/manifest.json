@@ -1,23 +1,33 @@
 {
-  "name": "McNaughton Transparency",
-  "description": "Shows you what anonymous data is being used to target ads.",
-  "version": "0.1",
-  "permissions": [],
-  "background": {
-    "scripts": ["background.js"]
-  },
-  "content_scripts": [
-    {
-      "matches": ["*://mcnaughton.media/", "*://mcnaughton.media/*"],
-      "css": ["styles.css"],
-      "js": ["content.js"]
-    }
-  ],
-  "web_accessible_resources" : ["injected.js"],
-  "browser_action": {
-    "default_icon": "icon.png",
-    "default_title": "McNaughton Transparency"
-  },
-  "manifest_version": 2
+    "name": "McNaughton Transparency",
+    "description": "Shows you what anonymous data is being used to target ads.",
+    "version": "0.1",
+    "permissions": [],
+    "background": {
+        "scripts": ["background.js"]
+    },
+    "content_scripts": [{
+        "matches": [
+            "*://mcnaughton.media/",
+            "*://mcnaughton.media/*",
+            "*://www.davisenterprise.com/",
+            "*://www.davisenterprise.com/*",
+            "*://www.dailyrepublic.com/",
+            "*://www.dailyrepublic.com/*",
+            "*://www.mtdemocrat.com/",
+            "*://www.mtdemocrat.com/*",
+            "*://www.villagelife.com/",
+            "*://www.villagelife.com/*"
+        ],
+        "css": ["styles.css"],
+        "js": ["content.js"]
+    }],
+    "web_accessible_resources": [
+        "injected.js"
+    ],
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_title": "McNaughton Transparency"
+    },
+    "manifest_version": 2
 }
-
