@@ -5,6 +5,7 @@ chrome.runtime.onMessage.addListener(function(obj, data, cb) {
 	}
 });
 
+/*
 chrome.browserAction.onClicked.addListener(function(tab) {
   chrome.windows.create({
   	url: "transparency.html?v=1",
@@ -17,8 +18,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 	        action: 'relayState',
 	        data: state
 	    }, function(r) {
-	        /* */
 	    });
 	},1000);
   });
-});
+}); */

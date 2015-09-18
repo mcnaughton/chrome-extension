@@ -116,7 +116,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
         )
     }
 
-    if (!!state.pageData && !!state.pageData.data) {
+    if (!!state.pageData && !!state.pageData.data && !!state.pageData.data.ID) {
       content = React.createElement("div", {id: "content", onMouseOut: contentMouseOut, onMouseOver: contentMouseOver}, 
         React.createElement("h1", null, 
         React.createElement("span", null, "Content"), 

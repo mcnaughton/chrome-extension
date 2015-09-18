@@ -116,7 +116,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
         </div>
     }
 
-    if (!!state.pageData && !!state.pageData.data) {
+    if (!!state.pageData && !!state.pageData.data && !!state.pageData.data.ID) {
       content = <div id="content" onMouseOut={contentMouseOut} onMouseOver={contentMouseOver}>
         <h1>
         <span>Content</span>
