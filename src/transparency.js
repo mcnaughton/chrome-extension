@@ -10,6 +10,8 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
         content = '',
         advertisements = '',
 				people = '',
+				tags = '',
+				categories = '',
 				locations = '',
 				organizations = '',
         ads = '',
@@ -59,7 +61,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
 										), 
 										React.createElement("tr", null, 
 										React.createElement("td", null, "URL"), 
-										React.createElement("td", null, bitem.term_url)
+										React.createElement("td", null, React.createElement("a", {target: "_blank", href: bitem.term_url}, bitem.term_url))
 										), 
 										React.createElement("tr", null, 
 										React.createElement("td", null, "Slug"), 
@@ -91,7 +93,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
               React.createElement("table", {width: "100%"}, 
                 React.createElement("tr", null, 
                   React.createElement("td", null, "URL"), 
-                  React.createElement("td", null, React.createElement("a", {href: aitem.src}, aitem.src))
+                  React.createElement("td", null, React.createElement("a", {target: "_blank", href: aitem.src}, aitem.src))
                 ), 
                 React.createElement("tr", null, 
                   React.createElement("td", null, "Unit Targeting"), 
@@ -127,7 +129,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
           author = React.createElement("div", {id: "author", onMouseOut: authorMouseOut, onMouseOver: authorMouseOver}, 
           React.createElement("h1", null, 
             React.createElement("span", null, "Author"), 
-            React.createElement("span", {id: "author-edit", style: hiddenstyle}, React.createElement("a", {target: "_blank", style: linkstyle, href: "{state.pageData.site.url}/wp-admin/user-edit.php?user_id={state.pageData.author.data.ID}"}, "Edit"))
+            React.createElement("span", {id: "author-edit", style: hiddenstyle}, React.createElement("a", {target: "_blank", style: linkstyle, href: state.pageData.site.url + "/wp-admin/user-edit.php?user_id=" + state.pageData.author.data.ID}, "Edit"))
           ), 
           React.createElement("table", {width: "100%"}, 
             React.createElement("tr", null, 
@@ -144,7 +146,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
             ), 
             React.createElement("tr", null, 
               React.createElement("td", null, "URL"), 
-              React.createElement("td", null, React.createElement("a", {href: state.pageData.author.data.user_url}, state.pageData.author.data.user_url))
+              React.createElement("td", null, React.createElement("a", {target: "_blank", href: state.pageData.author.data.user_url}, state.pageData.author.data.user_url))
             ), 
             React.createElement("tr", null, 
               React.createElement("td", null, "Slug"), 
@@ -158,6 +160,61 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
         )
     }
 
+		if (!!state.pageData && !!state.pageData.categories && state.pageData.categories.length > 0) {
+			categories = React.createElement("div", null, 
+				React.createElement("h1", null, "Categories"), 
+				React.createElement("table", null, state.pageData.categories.map(
+					((len) =>
+						(el, i) =>
+							doTerm(el, i !== (len - 1))
+					)(state.pageData.categories.length)
+				))
+			)
+		}
+		if (!!state.pageData && !!state.pageData.tags && state.pageData.tags.length > 0) {
+			tags = React.createElement("div", null, 
+				React.createElement("h1", null, "Tags"), 
+				React.createElement("table", null, state.pageData.tags.map(
+					((len) =>
+						(el, i) =>
+							doTerm(el, i !== (len - 1))
+					)(state.pageData.tags.length)
+				))
+			)
+		}
+		if (!!state.pageData && !!state.pageData.people && state.pageData.people.length > 0) {
+			people = React.createElement("div", null, 
+				React.createElement("h1", null, "People"), 
+				React.createElement("table", null, state.pageData.people.map(
+					((len) =>
+						(el, i) =>
+							doTerm(el, i !== (len - 1))
+					)(state.pageData.people.length)
+				))
+			)
+		}
+		if (!!state.pageData && !!state.pageData.locations && state.pageData.locations.length > 0) {
+			locations = React.createElement("div", null, 
+				React.createElement("h1", null, "Locations"), 
+				React.createElement("table", null, state.pageData.locations.map(
+					((len) =>
+						(el, i) =>
+							doTerm(el, i !== (len - 1))
+					)(state.pageData.locations.length)
+				))
+			)
+		}
+		if (!!state.pageData && !!state.pageData.organizations && state.pageData.organizations.length > 0) {
+			organizations = React.createElement("div", null, 
+				React.createElement("h1", null, "Organizations"), 
+				React.createElement("table", null, state.pageData.organizations.map(
+					((len) =>
+						(el, i) =>
+							doTerm(el, i !== (len - 1))
+					)(state.pageData.organizations.length)
+				))
+			)
+		}
 
     if (!!state.pageData && !!state.pageData.data && !!state.pageData.data.ID) {
       content = React.createElement("div", {id: "content", onMouseOut: contentMouseOut, onMouseOver: contentMouseOver}, 
@@ -176,7 +233,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
           ), 
           React.createElement("tr", null, 
             React.createElement("td", null, "URL"), 
-            React.createElement("td", null, React.createElement("a", {href: state.pageData.data.post_url}, state.pageData.data.post_url))
+            React.createElement("td", null, React.createElement("a", {target: "_blank", href: state.pageData.data.post_url}, state.pageData.data.post_url))
           ), 
           React.createElement("tr", null, 
             React.createElement("td", null, "Author"), 
@@ -202,24 +259,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
             React.createElement("td", null, "Slug"), 
             React.createElement("td", null, state.pageData.data.post_name)
           )
-					), 
-					React.createElement("h2", null, "Categories"), 
-					React.createElement("table", null, state.pageData.categories.map(
-						((len) =>
-							(el, i) =>
-								doTerm(el, i !== (len - 1))
-						)(state.pageData.categories.length)
-					)), 
-					React.createElement("h2", null, "Tags"), 
-					React.createElement("table", null, state.pageData.tags.map(
-						((len) =>
-							(el, i) =>
-								doTerm(el, i !== (len - 1))
-						)(state.pageData.tags.length)
-					)), 
-people, 
-locations, 
-organizations
+					)
       )
     }
 
@@ -228,7 +268,7 @@ organizations
       featured_image = React.createElement("div", {id: "featured-image", onMouseOut: imageMouseOut, onMouseOver: imageMouseOver}, 
       React.createElement("h1", null, 
         React.createElement("span", null, "Featured Image"), 
-        React.createElement("span", {id: "image-edit", style: hiddenstyle}, React.createElement("a", {target: "_blank", style: linkstyle, href: "{state.pageData.site.url}/wp-admin/post.php?action=edit&post={state.pageData.data.post_featured.ID}"}, "Edit"))
+        React.createElement("span", {id: "image-edit", style: hiddenstyle}, React.createElement("a", {target: "_blank", style: linkstyle, href: state.pageData.site.url + "/wp-admin/post.php?action=edit&post=" + state.pageData.data.post_featured.ID}, "Edit"))
       ), 
       React.createElement("table", {width: "100%"}, 
         React.createElement("tr", null, 
@@ -241,7 +281,7 @@ organizations
         ), 
         React.createElement("tr", null, 
           React.createElement("td", null, "URL"), 
-          React.createElement("td", null, React.createElement("a", {href: state.pageData.data.post_featured.media_url}, state.pageData.data.post_featured.media_url))
+          React.createElement("td", null, React.createElement("a", {target: "_blank", href: state.pageData.data.post_featured.media_url}, state.pageData.data.post_featured.media_url))
         ), 
         React.createElement("tr", null, 
           React.createElement("td", null, "Author"), 
@@ -286,7 +326,7 @@ organizations
           ), 
           React.createElement("tr", null, 
             React.createElement("td", null, "Site Url"), 
-            React.createElement("td", null, React.createElement("a", {href: state.pageData.site.url}, state.pageData.site.url))
+            React.createElement("td", null, React.createElement("a", {target: "_blank", href: state.pageData.site.url}, state.pageData.site.url))
           ), 
           React.createElement("tr", null, 
             React.createElement("td", null, "Type"), 
@@ -296,6 +336,13 @@ organizations
 
         author, 
         content, 
+
+				categories, 
+				tags, 
+				people, 
+				locations, 
+				organizations, 
+
         featured_image, 
 
         

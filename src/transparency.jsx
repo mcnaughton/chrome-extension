@@ -10,6 +10,8 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
         content = '',
         advertisements = '',
 				people = '',
+				tags = '',
+				categories = '',
 				locations = '',
 				organizations = '',
         ads = '',
@@ -59,7 +61,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
 										</tr>
 										<tr>
 										<td>URL</td>
-										<td>{bitem.term_url}</td>
+										<td><a target="_blank" href={bitem.term_url}>{bitem.term_url}</a></td>
 										</tr>
 										<tr>
 										<td>Slug</td>
@@ -91,7 +93,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
               <table width="100%">
                 <tr>
                   <td>URL</td>
-                  <td><a href={aitem.src}>{aitem.src}</a></td>
+                  <td><a target="_blank" href={aitem.src}>{aitem.src}</a></td>
                 </tr>
                 <tr>
                   <td>Unit Targeting</td>
@@ -127,7 +129,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
           author = <div id="author" onMouseOut={authorMouseOut} onMouseOver={authorMouseOver}>
           <h1>
             <span>Author</span>
-            <span id="author-edit" style={hiddenstyle}><a target="_blank" style={linkstyle} href="{state.pageData.site.url}/wp-admin/user-edit.php?user_id={state.pageData.author.data.ID}">Edit</a></span>
+            <span id="author-edit" style={hiddenstyle}><a target="_blank" style={linkstyle} href={state.pageData.site.url + "/wp-admin/user-edit.php?user_id=" + state.pageData.author.data.ID}>Edit</a></span>
           </h1>
           <table width="100%">
             <tr>
@@ -144,7 +146,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
             </tr>
             <tr>
               <td>URL</td>
-              <td><a href={state.pageData.author.data.user_url}>{state.pageData.author.data.user_url}</a></td>
+              <td><a target="_blank" href={state.pageData.author.data.user_url}>{state.pageData.author.data.user_url}</a></td>
             </tr>
             <tr>
               <td>Slug</td>
@@ -158,6 +160,61 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
         </div>
     }
 
+		if (!!state.pageData && !!state.pageData.categories && state.pageData.categories.length > 0) {
+			categories = <div>
+				<h1>Categories</h1>
+				<table>{state.pageData.categories.map(
+					((len) =>
+						(el, i) =>
+							doTerm(el, i !== (len - 1))
+					)(state.pageData.categories.length)
+				)}</table>
+			</div>
+		}
+		if (!!state.pageData && !!state.pageData.tags && state.pageData.tags.length > 0) {
+			tags = <div>
+				<h1>Tags</h1>
+				<table>{state.pageData.tags.map(
+					((len) =>
+						(el, i) =>
+							doTerm(el, i !== (len - 1))
+					)(state.pageData.tags.length)
+				)}</table>
+			</div>
+		}
+		if (!!state.pageData && !!state.pageData.people && state.pageData.people.length > 0) {
+			people = <div>
+				<h1>People</h1>
+				<table>{state.pageData.people.map(
+					((len) =>
+						(el, i) =>
+							doTerm(el, i !== (len - 1))
+					)(state.pageData.people.length)
+				)}</table>
+			</div>
+		}
+		if (!!state.pageData && !!state.pageData.locations && state.pageData.locations.length > 0) {
+			locations = <div>
+				<h1>Locations</h1>
+				<table>{state.pageData.locations.map(
+					((len) =>
+						(el, i) =>
+							doTerm(el, i !== (len - 1))
+					)(state.pageData.locations.length)
+				)}</table>
+			</div>
+		}
+		if (!!state.pageData && !!state.pageData.organizations && state.pageData.organizations.length > 0) {
+			organizations = <div>
+				<h1>Organizations</h1>
+				<table>{state.pageData.organizations.map(
+					((len) =>
+						(el, i) =>
+							doTerm(el, i !== (len - 1))
+					)(state.pageData.organizations.length)
+				)}</table>
+			</div>
+		}
 
     if (!!state.pageData && !!state.pageData.data && !!state.pageData.data.ID) {
       content = <div id="content" onMouseOut={contentMouseOut} onMouseOver={contentMouseOver}>
@@ -176,7 +233,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
           </tr>
           <tr>
             <td>URL</td>
-            <td><a href={state.pageData.data.post_url}>{state.pageData.data.post_url}</a></td>
+            <td><a target="_blank" href={state.pageData.data.post_url}>{state.pageData.data.post_url}</a></td>
           </tr>
           <tr>
             <td>Author</td>
@@ -203,23 +260,6 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
             <td>{state.pageData.data.post_name}</td>
           </tr>
 					</table>
-					<h2>Categories</h2>
-					<table>{state.pageData.categories.map(
-						((len) =>
-							(el, i) =>
-								doTerm(el, i !== (len - 1))
-						)(state.pageData.categories.length)
-					)}</table>
-					<h2>Tags</h2>
-					<table>{state.pageData.tags.map(
-						((len) =>
-							(el, i) =>
-								doTerm(el, i !== (len - 1))
-						)(state.pageData.tags.length)
-					)}</table>
-{people}
-{locations}
-{organizations}
       </div>
     }
 
@@ -228,7 +268,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
       featured_image = <div id="featured-image" onMouseOut={imageMouseOut} onMouseOver={imageMouseOver}>
       <h1>
         <span>Featured Image</span>
-        <span id="image-edit" style={hiddenstyle}><a target="_blank" style={linkstyle} href="{state.pageData.site.url}/wp-admin/post.php?action=edit&post={state.pageData.data.post_featured.ID}">Edit</a></span>
+        <span id="image-edit" style={hiddenstyle}><a target="_blank" style={linkstyle} href={state.pageData.site.url + "/wp-admin/post.php?action=edit&post=" + state.pageData.data.post_featured.ID}>Edit</a></span>
       </h1>
       <table width="100%">
         <tr>
@@ -241,7 +281,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
         </tr>
         <tr>
           <td>URL</td>
-          <td><a href={state.pageData.data.post_featured.media_url}>{state.pageData.data.post_featured.media_url}</a></td>
+          <td><a target="_blank" href={state.pageData.data.post_featured.media_url}>{state.pageData.data.post_featured.media_url}</a></td>
         </tr>
         <tr>
           <td>Author</td>
@@ -286,7 +326,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
           </tr>
           <tr>
             <td>Site Url</td>
-            <td><a href={state.pageData.site.url}>{state.pageData.site.url}</a></td>
+            <td><a target="_blank" href={state.pageData.site.url}>{state.pageData.site.url}</a></td>
           </tr>
           <tr>
             <td>Type</td>
@@ -296,6 +336,13 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
 
         {author}
         {content}
+
+				{categories}
+				{tags}
+				{people}
+				{locations}
+				{organizations}
+
         {featured_image}
 
         {
