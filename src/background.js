@@ -26,21 +26,21 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 chrome.tabs.onUpdated.addListener(function checkForValidUrl(tabId, changeInfo, tab) {
 	if (null !== tab.url.match(/dailyrepublic/)) {
 		chrome.pageAction.show(tabId);
-	} else if (null !== tab.url.match(/davisenterprise/)) {
+	} else if (null !== tab.url.match(/davisenterprise\.com/)) {
 		chrome.pageAction.show(tabId);
-	} else if (null !== tab.url.match(/mcnaughton/)) {
+	} else if (null !== tab.url.match(/mcnaughton\.media/)) {
 		chrome.pageAction.show(tabId);
-	} else if (null !== tab.url.match(/mtdemocrat/)) {
+	} else if (null !== tab.url.match(/mtdemocrat\.com/)) {
 		chrome.pageAction.show(tabId);
-	} else if (null !== tab.url.match(/wintersexpress/)) {
+	} else if (null !== tab.url.match(/wintersexpress\.com/)) {
 		chrome.pageAction.show(tabId);
-	} else if (null !== tab.url.match(/villagelife/)) {
+	} else if (null !== tab.url.match(/villagelife\.com/)) {
 		chrome.pageAction.show(tabId);
-	} else if (null !== tab.url.match(/gtgazette/)) {
+	} else if (null !== tab.url.match(/gtgazette\.com/)) {
 		chrome.pageAction.show(tabId);
-	} else if (null !== tab.url.match(/edcadventures/)) {
+	} else if (null !== tab.url.match(/edcadventures\.com/)) {
 		chrome.pageAction.show(tabId);
-	} else if (null !== tab.url.match(/solanolife/)) {
+	} else if (null !== tab.url.match(/solanolife\.com/)) {
 		chrome.pageAction.show(tabId);
 	}
 });
