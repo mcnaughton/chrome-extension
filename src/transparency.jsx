@@ -120,7 +120,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
       content = <div id="content" onMouseOut={contentMouseOut} onMouseOver={contentMouseOver}>
         <h1>
         <span>Content</span>
-        <span id="content-edit" style={hiddenstyle}><a target="_blank" style={linkstyle} href="{state.pageData.site.url}/wp-admin/post.php?action=edit&post={state.pageData.data.ID}">Edit</a></span>
+        <span id="content-edit" style={hiddenstyle}><a target="_blank" style={linkstyle} href={state.pageData.site.url + "/wp-admin/post.php?action=edit&post=" + state.pageData.data.ID}>Edit</a></span>
         </h1>
         <table width="100%">
           <tr>
@@ -158,10 +158,6 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
           <tr>
             <td>Slug</td>
             <td>{state.pageData.data.post_name}</td>
-          </tr>
-          <tr>
-            <td>Type</td>
-            <td>{state.pageData.data.type}</td>
           </tr>
         </table>
       </div>

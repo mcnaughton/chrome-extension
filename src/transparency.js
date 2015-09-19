@@ -120,7 +120,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
       content = React.createElement("div", {id: "content", onMouseOut: contentMouseOut, onMouseOver: contentMouseOver}, 
         React.createElement("h1", null, 
         React.createElement("span", null, "Content"), 
-        React.createElement("span", {id: "content-edit", style: hiddenstyle}, React.createElement("a", {target: "_blank", style: linkstyle, href: "{state.pageData.site.url}/wp-admin/post.php?action=edit&post={state.pageData.data.ID}"}, "Edit"))
+        React.createElement("span", {id: "content-edit", style: hiddenstyle}, React.createElement("a", {target: "_blank", style: linkstyle, href: state.pageData.site.url + "/wp-admin/post.php?action=edit&post=" + state.pageData.data.ID}, "Edit"))
         ), 
         React.createElement("table", {width: "100%"}, 
           React.createElement("tr", null, 
@@ -158,10 +158,6 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
           React.createElement("tr", null, 
             React.createElement("td", null, "Slug"), 
             React.createElement("td", null, state.pageData.data.post_name)
-          ), 
-          React.createElement("tr", null, 
-            React.createElement("td", null, "Type"), 
-            React.createElement("td", null, state.pageData.data.type)
           )
         )
       )
