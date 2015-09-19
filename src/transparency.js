@@ -9,6 +9,9 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
         featured_image = '',
         content = '',
         advertisements = '',
+				people = '',
+				locations = '',
+				organizations = '',
         ads = '',
         author = '',
         authorMouseOver = function() {
@@ -42,8 +45,47 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
         getTag = function(k, v) {
           return
         },
+				doTerm = function(bitem, domore) {
+					var tagStyle = {},
+						sep = '';
+						if(true === domore) {
+							sep = React.createElement("hr", null);
+						}
+					return	React.createElement("div", null, 
+						React.createElement("table", null, 
+										React.createElement("tr", null, 
+										React.createElement("td", null, "Name"), 
+										React.createElement("td", null, bitem.name)
+										), 
+										React.createElement("tr", null, 
+										React.createElement("td", null, "URL"), 
+										React.createElement("td", null, bitem.term_url)
+										), 
+										React.createElement("tr", null, 
+										React.createElement("td", null, "Slug"), 
+										React.createElement("td", null, bitem.slug)
+										), 
+										React.createElement("tr", null, 
+										React.createElement("td", null, "Term ID"), 
+										React.createElement("td", null, bitem.term_id)
+										), 
+										React.createElement("tr", null, 
+										React.createElement("td", null, "Taxonomy"), 
+										React.createElement("td", null, bitem.taxonomy)
+										), 
+										React.createElement("tr", null, 
+										React.createElement("td", null, "Taxonomy ID"), 
+										React.createElement("td", null, bitem.term_taxonomy_id)
+										), 
+										React.createElement("tr", null, 
+										React.createElement("td", null, "Count"), 
+										React.createElement("td", null, bitem.count)
+										)
+									), 
+									sep
+									)
+				},
         getAd = function(aitem) {
-            var tagStyle = {};
             return React.createElement("div", {class: "advertisement"}, 
               React.createElement("h2", null, aitem.slot), 
               React.createElement("table", {width: "100%"}, 
@@ -57,8 +99,8 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
                     ((map) =>
                       ((key) =>
                         React.createElement("tr", null, 
-                          React.createElement("td", {style: tagStyle}, key), 
-                          React.createElement("td", {style: tagStyle}, map[key].join(", "))
+                          React.createElement("td", null, key), 
+                          React.createElement("td", null, map[key].join(", "))
                         )
                       )
                     )(aitem.targeting.unit)
@@ -70,8 +112,8 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
                     ((map) =>
                       ((key) =>
                         React.createElement("tr", null, 
-                          React.createElement("td", {style: tagStyle}, key), 
-                          React.createElement("td", {style: tagStyle}, map[key].join(", "))
+                          React.createElement("td", null, key), 
+                          React.createElement("td", null, map[key].join(", "))
                         )
                       )
                     )(aitem.targeting.page)
@@ -116,6 +158,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
         )
     }
 
+
     if (!!state.pageData && !!state.pageData.data && !!state.pageData.data.ID) {
       content = React.createElement("div", {id: "content", onMouseOut: contentMouseOut, onMouseOver: contentMouseOver}, 
         React.createElement("h1", null, 
@@ -159,7 +202,24 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
             React.createElement("td", null, "Slug"), 
             React.createElement("td", null, state.pageData.data.post_name)
           )
-        )
+					), 
+					React.createElement("h2", null, "Categories"), 
+					React.createElement("table", null, state.pageData.categories.map(
+						((len) =>
+							(el, i) =>
+								doTerm(el, i !== (len - 1))
+						)(state.pageData.categories.length)
+					)), 
+					React.createElement("h2", null, "Tags"), 
+					React.createElement("table", null, state.pageData.tags.map(
+						((len) =>
+							(el, i) =>
+								doTerm(el, i !== (len - 1))
+						)(state.pageData.tags.length)
+					)), 
+people, 
+locations, 
+organizations
       )
     }
 

@@ -9,6 +9,9 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
         featured_image = '',
         content = '',
         advertisements = '',
+				people = '',
+				locations = '',
+				organizations = '',
         ads = '',
         author = '',
         authorMouseOver = function() {
@@ -42,8 +45,47 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
         getTag = function(k, v) {
           return
         },
+				doTerm = function(bitem, domore) {
+					var tagStyle = {},
+						sep = '';
+						if(true === domore) {
+							sep = <hr/>;
+						}
+					return	<div>
+						<table>
+										<tr>
+										<td>Name</td>
+										<td>{bitem.name}</td>
+										</tr>
+										<tr>
+										<td>URL</td>
+										<td>{bitem.term_url}</td>
+										</tr>
+										<tr>
+										<td>Slug</td>
+										<td>{bitem.slug}</td>
+										</tr>
+										<tr>
+										<td>Term ID</td>
+										<td>{bitem.term_id}</td>
+										</tr>
+										<tr>
+										<td>Taxonomy</td>
+										<td>{bitem.taxonomy}</td>
+										</tr>
+										<tr>
+										<td>Taxonomy ID</td>
+										<td>{bitem.term_taxonomy_id}</td>
+										</tr>
+										<tr>
+										<td>Count</td>
+										<td>{bitem.count}</td>
+										</tr>
+									</table>
+									{sep}
+									</div>
+				},
         getAd = function(aitem) {
-            var tagStyle = {};
             return <div class="advertisement">
               <h2>{aitem.slot}</h2>
               <table width="100%">
@@ -57,8 +99,8 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
                     ((map) =>
                       ((key) =>
                         <tr>
-                          <td style={tagStyle}>{key}</td>
-                          <td style={tagStyle}>{map[key].join(", ")}</td>
+                          <td>{key}</td>
+                          <td>{map[key].join(", ")}</td>
                         </tr>
                       )
                     )(aitem.targeting.unit)
@@ -70,8 +112,8 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
                     ((map) =>
                       ((key) =>
                         <tr>
-                          <td style={tagStyle}>{key}</td>
-                          <td style={tagStyle}>{map[key].join(", ")}</td>
+                          <td>{key}</td>
+                          <td>{map[key].join(", ")}</td>
                         </tr>
                       )
                     )(aitem.targeting.page)
@@ -116,6 +158,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
         </div>
     }
 
+
     if (!!state.pageData && !!state.pageData.data && !!state.pageData.data.ID) {
       content = <div id="content" onMouseOut={contentMouseOut} onMouseOver={contentMouseOver}>
         <h1>
@@ -159,7 +202,24 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
             <td>Slug</td>
             <td>{state.pageData.data.post_name}</td>
           </tr>
-        </table>
+					</table>
+					<h2>Categories</h2>
+					<table>{state.pageData.categories.map(
+						((len) =>
+							(el, i) =>
+								doTerm(el, i !== (len - 1))
+						)(state.pageData.categories.length)
+					)}</table>
+					<h2>Tags</h2>
+					<table>{state.pageData.tags.map(
+						((len) =>
+							(el, i) =>
+								doTerm(el, i !== (len - 1))
+						)(state.pageData.tags.length)
+					)}</table>
+{people}
+{locations}
+{organizations}
       </div>
     }
 
