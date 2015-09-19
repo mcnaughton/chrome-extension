@@ -23,11 +23,12 @@ chrome.browserAction.onClicked.addListener(function(tab) {
   });
 }); */
 
-chrome.tabs.onUpdated.addListener(function checkForValidUrl(tabId, changeInfo, tab) {
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
 	if (null !== tab.url.match(/dailyrepublic/)) {
 		chrome.pageAction.show(tabId);
+	} else if (null !== tab.url.match(/davisenterprise/)) {
 		chrome.pageAction.show(tabId);
-	} else if (null !== tab.url.match(/mcnaughton\.media/)) {
+	} else if (null !== tab.url.match(/mcnaughton/)) {
 		chrome.pageAction.show(tabId);
 	} else if (null !== tab.url.match(/mtdemocrat/)) {
 		chrome.pageAction.show(tabId);
