@@ -85,32 +85,23 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
 										</tr>
 									</table>
 									{sep}
-									</div>
+					</div>
 				},
         getAd = function(aitem) {
             return <div class="advertisement">
               <h2>{aitem.slot}</h2>
               <table width="100%">
                 <tr>
-                  <td>URL</td>
+                  <td>Content URL</td>
                   <td><a target="_blank" href={aitem.src}>{aitem.src}</a></td>
                 </tr>
-                <tr>
-                  <td>Unit Targeting</td>
-                  <td><table>{Object.keys(aitem.targeting.unit).map(
-                    ((map) =>
-                      ((key) =>
-                        <tr>
-                          <td>{key}</td>
-                          <td>{map[key].join(", ")}</td>
-                        </tr>
-                      )
-                    )(aitem.targeting.unit)
-                  )}</table></td>
+								<tr>
+                  <td>Click URL</td>
+                  <td><a target="_blank" href={aitem.click}>{aitem.click}</a></td>
                 </tr>
                 <tr>
-                  <td>Page Targeting</td>
-                  <td><table>{Object.keys(aitem.targeting.page).map(
+                  <td>Targeting</td>
+                  <td><table>{Object.keys(aitem.targeting).map(
                     ((map) =>
                       ((key) =>
                         <tr>
@@ -118,7 +109,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
                           <td>{map[key].join(", ")}</td>
                         </tr>
                       )
-                    )(aitem.targeting.page)
+                    )(aitem.targeting || {})
                   )}</table></td>
                 </tr>
               </table>

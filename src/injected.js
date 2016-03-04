@@ -7,33 +7,37 @@ window.updateExtension = function() {
     if (!pubads) {
         return;
     }
-    var ads = pubads.Y,
-        x, xlen = ads.length,
-        xitem, items = [],
-        xsizes, sizes, y, ylen,
-        yitem;
-    for (x = 0; x < xlen; x += 1) {
-        xitem = ads[x];
-        sizes = [];
-        xsizes = xitem.T;
-        ylen = xsizes.length;
-        for (y = 0; y < ylen; y +=
-            1) {
-            yitem = xsizes[y];
-            sizes.push(yitem.l +
-                "x" + yitem.j);
-        }
+		try {
+			var ads = pubads.aa,
+					x, xlen = ads.length,
+					xitem, items = [],
+					xsizes, sizes, y, ylen,
+					yitem;
+			for (x = 0; x < xlen; x += 1) {
+					xitem = ads[x];
+					sizes = [];
+					xsizes = xitem.getSizes()
+					ylen = xsizes.length;
+					for (y = 0; y < ylen; y +=
+							1) {
+							yitem = xsizes[y];
+							sizes.push(yitem.l +
+									"x" + yitem.j);
+					}
 
-        items.push({
-						targeting: {
-							page: pubads.G,
-							unit: xitem.getTargetingMap()
-						},
-            slot: xitem.w,
-            sizes: sizes,
-            src: xitem.L
-        });
-    }
+					items.push({
+							targeting: xitem.getTargeting(),
+							slot: xitem.getName(),
+							sizes: xitem.getSizes(),
+							src: xitem.getContentUrl(),
+							url: xitem.getClickUrl(),
+							exclusions: xitem.getCategoryExclusions()
+					});
+			}
+		} catch (e) {
+			/* no bueno */
+		}
+
     return items;
 }(googletag && googletag.pubads() ||
     false))

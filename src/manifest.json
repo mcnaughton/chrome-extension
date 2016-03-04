@@ -1,7 +1,7 @@
 {
     "name": "McNaughton",
     "description": "A tool to make McNaughton's sites transparent, along with their content, authors, images and advertisements.",
-    "version": "0.1",
+    "version": "0.3",
     "permissions": ["tabs"],
     "background": {
         "scripts": ["background.js"],
@@ -39,5 +39,5 @@
       "16": "icon_16.png",
        "48": "icon_48.png",
       "128": "icon_128.png" },
-    "manifest_version": 3
+    "manifest_version": 2
 }

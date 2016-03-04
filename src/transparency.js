@@ -85,32 +85,23 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
 										)
 									), 
 									sep
-									)
+					)
 				},
         getAd = function(aitem) {
             return React.createElement("div", {class: "advertisement"}, 
               React.createElement("h2", null, aitem.slot), 
               React.createElement("table", {width: "100%"}, 
                 React.createElement("tr", null, 
-                  React.createElement("td", null, "URL"), 
+                  React.createElement("td", null, "Content URL"), 
                   React.createElement("td", null, React.createElement("a", {target: "_blank", href: aitem.src}, aitem.src))
                 ), 
-                React.createElement("tr", null, 
-                  React.createElement("td", null, "Unit Targeting"), 
-                  React.createElement("td", null, React.createElement("table", null, Object.keys(aitem.targeting.unit).map(
-                    ((map) =>
-                      ((key) =>
-                        React.createElement("tr", null, 
-                          React.createElement("td", null, key), 
-                          React.createElement("td", null, map[key].join(", "))
-                        )
-                      )
-                    )(aitem.targeting.unit)
-                  )))
+								React.createElement("tr", null, 
+                  React.createElement("td", null, "Click URL"), 
+                  React.createElement("td", null, React.createElement("a", {target: "_blank", href: aitem.click}, aitem.click))
                 ), 
                 React.createElement("tr", null, 
-                  React.createElement("td", null, "Page Targeting"), 
-                  React.createElement("td", null, React.createElement("table", null, Object.keys(aitem.targeting.page).map(
+                  React.createElement("td", null, "Targeting"), 
+                  React.createElement("td", null, React.createElement("table", null, Object.keys(aitem.targeting).map(
                     ((map) =>
                       ((key) =>
                         React.createElement("tr", null, 
@@ -118,7 +109,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
                           React.createElement("td", null, map[key].join(", "))
                         )
                       )
-                    )(aitem.targeting.page)
+                    )(aitem.targeting || {})
                   )))
                 )
               )
