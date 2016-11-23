@@ -1,5 +1,3 @@
-/* */
-
 chrome.runtime.onMessage.addListener(function(obj, cb) {
 	if (!obj) {
 		return;
@@ -16,6 +14,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
 				organizations = '',
         ads = '',
         author = '',
+        authorObject = (!!state.pageData.data ? state.pageData.data.post_author_object : (!!state.pageData.author ? state.pageData.author : {})),
         authorMouseOver = function() {
           window.document.getElementById('author-edit').style.display = 'inline';
         },
@@ -35,13 +34,13 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
           window.document.getElementById('image-edit').style.display = 'none';
         },
         hiddenstyle = {
-          'margin-left': '10px',
+          'marginLeft': '10px',
           'display': 'none',
           'float': 'right'
         },
         linkstyle = {
           color: 'black',
-          'text-decoration': 'none',
+          'textDecoration': 'none',
           'cursor': 'mouse'
         },
         getTag = function(k, v) {
@@ -67,28 +66,20 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
 										<td>Slug</td>
 										<td>{bitem.slug}</td>
 										</tr>
-										<tr>
-										<td>Term ID</td>
-										<td>{bitem.term_id}</td>
-										</tr>
-										<tr>
+                    <tr>
 										<td>Taxonomy</td>
 										<td>{bitem.taxonomy}</td>
 										</tr>
-										<tr>
-										<td>Taxonomy ID</td>
-										<td>{bitem.term_taxonomy_id}</td>
-										</tr>
-										<tr>
-										<td>Count</td>
-										<td>{bitem.count}</td>
-										</tr>
+                    <tr>
+                    <td>Term ID</td>
+                    <td>{bitem.term_id}</td>
+                    </tr>
 									</table>
 									{sep}
 					</div>
 				},
         getAd = function(aitem) {
-            return <div class="advertisement">
+            return <div className="advertisement">
               <h2>{aitem.slot}</h2>
               <table width="100%">
                 <tr>
@@ -97,7 +88,7 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
                 </tr>
 								<tr>
                   <td>Click URL</td>
-                  <td><a target="_blank" href={aitem.click}>{aitem.click}</a></td>
+                  <td><a target="_blank" href={aitem.url}>{aitem.url}</a></td>
                 </tr>
                 <tr>
                   <td>Targeting</td>
@@ -116,96 +107,100 @@ chrome.runtime.onMessage.addListener(function(obj, cb) {
             </div>
         };
 
-    if (!!state.pageData && !!state.pageData.author) {
+    if (!!state.pageData && !!authorObject) {
           author = <div id="author" onMouseOut={authorMouseOut} onMouseOver={authorMouseOver}>
           <h1>
             <span>Author</span>
-            <span id="author-edit" style={hiddenstyle}><a target="_blank" style={linkstyle} href={state.pageData.site.url + "/wp-admin/user-edit.php?user_id=" + state.pageData.author.data.ID}>Edit</a></span>
+            <span id="author-edit" style={hiddenstyle}><a target="_blank" style={linkstyle} href={state.pageData.site.url + "/wp-admin/user-edit.php?user_id=" + ((!!authorObject && !!authorObject.data) ? authorObject.data.ID : '') }>Edit</a></span>
           </h1>
           <table width="100%">
             <tr>
-              <td>Display Name</td>
-              <td>{state.pageData.author.data.display_name}</td>
+              <td>User Display Name</td>
+              <td>{((!!authorObject && !!authorObject.data) ? authorObject.data.display_name : '')}</td>
             </tr>
             <tr>
-              <td>ID</td>
-              <td>{state.pageData.author.data.ID}</td>
+              <td>User ID</td>
+              <td>{!!authorObject && !!authorObject.data ? authorObject.data.ID : ''}</td>
             </tr>
             <tr>
-              <td>Login</td>
-              <td>{state.pageData.author.data.user_login}</td>
+              <td>User Login</td>
+              <td>{!!authorObject && !!authorObject.data ? authorObject.data.user_login : ''}</td>
             </tr>
             <tr>
-              <td>URL</td>
-              <td><a target="_blank" href={state.pageData.author.data.user_url}>{state.pageData.author.data.user_url}</a></td>
+              <td>Profile URL</td>
+              <td><a target="_blank" href={!!authorObject && !!authorObject.data ? authorObject.data.profile_url : ''}>{!!authorObject && !!authorObject.data ? authorObject.data.profile_url : ''}</a></td>
             </tr>
             <tr>
-              <td>Slug</td>
-              <td>{state.pageData.author.data.user_nicename}</td>
+              <td>User URL</td>
+              <td><a target="_blank" href={!!authorObject && !!authorObject.data ? authorObject.data.user_url : ''}>{!!authorObject && !!authorObject.data ? authorObject.data.user_url : ''}</a></td>
             </tr>
             <tr>
-              <td>Registered</td>
-              <td>{state.pageData.author.data.user_registered}</td>
+              <td>User Registered</td>
+              <td>{!!authorObject && !!authorObject.data ? authorObject.data.user_registered : ''}</td>
             </tr>
           </table>
         </div>
     }
 
-		if (!!state.pageData && !!state.pageData.categories && state.pageData.categories.length > 0) {
-			categories = <div>
-				<h1>Categories</h1>
-				<table>{state.pageData.categories.map(
-					((len) =>
-						(el, i) =>
-							doTerm(el, i !== (len - 1))
-					)(state.pageData.categories.length)
-				)}</table>
-			</div>
-		}
-		if (!!state.pageData && !!state.pageData.tags && state.pageData.tags.length > 0) {
-			tags = <div>
-				<h1>Tags</h1>
-				<table>{state.pageData.tags.map(
-					((len) =>
-						(el, i) =>
-							doTerm(el, i !== (len - 1))
-					)(state.pageData.tags.length)
-				)}</table>
-			</div>
-		}
-		if (!!state.pageData && !!state.pageData.people && state.pageData.people.length > 0) {
-			people = <div>
-				<h1>People</h1>
-				<table>{state.pageData.people.map(
-					((len) =>
-						(el, i) =>
-							doTerm(el, i !== (len - 1))
-					)(state.pageData.people.length)
-				)}</table>
-			</div>
-		}
-		if (!!state.pageData && !!state.pageData.locations && state.pageData.locations.length > 0) {
-			locations = <div>
-				<h1>Locations</h1>
-				<table>{state.pageData.locations.map(
-					((len) =>
-						(el, i) =>
-							doTerm(el, i !== (len - 1))
-					)(state.pageData.locations.length)
-				)}</table>
-			</div>
-		}
-		if (!!state.pageData && !!state.pageData.organizations && state.pageData.organizations.length > 0) {
-			organizations = <div>
-				<h1>Organizations</h1>
-				<table>{state.pageData.organizations.map(
-					((len) =>
-						(el, i) =>
-							doTerm(el, i !== (len - 1))
-					)(state.pageData.organizations.length)
-				)}</table>
-			</div>
-		}
+		if (!!state.pageData && !!state.pageData.data && !!state.pageData.data.post_categories && state.pageData.data.post_categories.length > 0) {
+      categories = <div>
+        <h1>Categories</h1>
+        <table>{state.pageData.categories.map(
+          ((len) =>
+            (el, i) =>
+              doTerm(el, i !== (len - 1))
+          )(state.pageData.categories.length)
+        )}</table>
+      </div>
+    }
+
+		if (!!state.pageData && !!state.pageData.data && !!state.pageData.data.post_tags && state.pageData.data.post_tags.length > 0) {
+      tags = <div>
+        <h1>Tags</h1>
+        <table>{state.pageData.data.post_tags.map(
+          ((len) =>
+            (el, i) =>
+              doTerm(el, i !== (len - 1))
+          )(state.pageData.data.post_tags.length)
+        )}</table>
+      </div>
+    }
+
+		if (!!state.pageData && !!state.pageData.data && !!state.pageData.data.post_people && state.pageData.data.post_people.length > 0) {
+      people = <div>
+        <h1>People</h1>
+        <table>{state.pageData.data.post_people.map(
+          ((len) =>
+            (el, i) =>
+              doTerm(el, i !== (len - 1))
+          )(state.pageData.data.post_people.length)
+        )}</table>
+      </div>
+    }
+
+		if (!!state.pageData && !!state.pageData.data && !!state.pageData.data.post_locations && state.pageData.data.post_locations.length > 0) {
+      locations = <div>
+        <h1>Locations</h1>
+        <table>{state.pageData.data.post_locations.map(
+          ((len) =>
+            (el, i) =>
+              doTerm(el, i !== (len - 1))
+          )(state.pageData.data.post_locations.length)
+        )}</table>
+      </div>
+    }
+
+		if (!!state.pageData && !!state.pageData.data && !!state.pageData.data.post_organizations && state.pageData.data.post_organizations.length > 0) {
+      locations = <div>
+        <h1>Organizations</h1>
+        <table>{state.pageData.data.post_organizations.map(
+          ((len) =>
+            (el, i) =>
+              doTerm(el, i !== (len - 1))
+          )(state.pageData.data.post_organizations.length)
+        )}</table>
+      </div>
+    }
 
     if (!!state.pageData && !!state.pageData.data && !!state.pageData.data.ID) {
       content = <div id="content" onMouseOut={contentMouseOut} onMouseOver={contentMouseOver}>
